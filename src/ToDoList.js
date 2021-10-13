@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { createTodo, deleteTodo, getTodos, updateTodo } from './api-utils.js'
+import { clearCompleted } from './utils.js';
 
 export default class ToDoList extends Component {
     state = {
@@ -16,6 +17,8 @@ export default class ToDoList extends Component {
     setToDo = (e) => this.setState({ newToDo: e.target.value })
 
     handleSubmit = async e => {
+        !this.state.newToDo ? alert('Please enter a task!') :
+        
         e.preventDefault();
         const token = this.props.token;
         // console.log(token);
@@ -23,13 +26,14 @@ export default class ToDoList extends Component {
         // console.log(addedToDo);
 
         const todos = await getTodos(this.props.token);
-        this.setState({ todos })
+        this.setState({ todos, newToDo: '' })
 
     }
 
     handleClear = async() => {
         const todos = await getTodos(this.props.token);
-        await todos.forEach(todo => todo.completed === 'true' && deleteTodo(todo.id, this.props.token))
+        // await todos.forEach(todo => todo.completed === 'true' && deleteTodo(todo.id, this.props.token))
+        await clearCompleted(todos, this.props.token);
         const cleanList = await getTodos(this.props.token);
         await this.setState({ todos: cleanList })
     }
@@ -41,7 +45,7 @@ export default class ToDoList extends Component {
             <div className="todo-container">
                 <form className="addtodo-form" onSubmit={this.handleSubmit}>
                 <label>What do you need to do?
-                    <input onChange={this.setToDo} />
+                    <input value={this.state.newToDo} onChange={this.setToDo} />
                 </label>
                 <button>Add</button>
                 </form>
