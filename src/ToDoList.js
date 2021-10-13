@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { createTodo, deleteTodo, getTodos, updateTodo } from './api-utils.js'
+import { createTodo, getTodos, updateTodo } from './api-utils.js'
 import { clearCompleted } from './utils.js';
 
 export default class ToDoList extends Component {
