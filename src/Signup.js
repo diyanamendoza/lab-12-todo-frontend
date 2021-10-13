@@ -12,8 +12,6 @@ export default class Signup extends Component {
     handleSubmit = async e => {
         e.preventDefault();
         try {
-        const { error } = await signUp(this.state.email, this.state.password);
-        console.log(error);
         const { token } = await signUp(this.state.email, this.state.password);
         this.props.handleTokenChange(token)
         this.props.history.push('./todolist')
@@ -22,7 +20,7 @@ export default class Signup extends Component {
             this.setState({error: e.response.body.error})
             this.state.error === 'email and password required' && alert('Please provide both an email and password.')
             this.state.error === 'email already exists' && alert(`This profile already exists. Please go to login instead or create a new user.`)
-            // console.log(this.state.error)
+            console.log(this.state.error)
         }
     }
 
