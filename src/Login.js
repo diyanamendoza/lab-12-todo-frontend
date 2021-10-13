@@ -4,14 +4,21 @@ import { logIn } from './api-utils.js'
 export default class Auth extends Component {
     state = {
         password: '',
-        email: ''
+        email: '',
+        error: ''
     }
 
     handleSubmit = async e => {
         e.preventDefault();
+        try {
         const { token } = await logIn(this.state.email, this.state.password);
         this.props.handleTokenChange(token)
         this.props.history.push('./todolist')
+        }
+        catch(e) {
+            this.setState({error: e.response.body.error})
+            alert(this.state.error)
+        }
     }
 
     setEmail = (e) => this.setState({ email: e.target.value })
